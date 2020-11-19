@@ -15,7 +15,6 @@
 
 .logodiv img{
     border: 0px solid #42515f;
-    margin-left: 90px;
 }
 
 .emp-text{
@@ -132,7 +131,7 @@ select{
     font-weight: 400;
     color: #42515f;
     min-width: 100px;
-    padding: 2px 2px;
+    padding: 2px 1px;
     border-radius: 4px;
     cursor: pointer;
 }
