@@ -1,8 +1,8 @@
 .header content{
     display: flex;
     flex-direction: row;
-    border: 0px solid black;
     justify-content: center;
+    border: 0px solid black;
 }
 
 .logodiv{
@@ -92,7 +92,7 @@ label {
 }
 
 .profile {
-    width: 80px;
+    width: 50px;
     border-radius: 20%;
     margin-left: 12px;
 }
