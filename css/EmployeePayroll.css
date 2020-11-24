@@ -92,7 +92,7 @@ label {
 }
 
 .profile {
-    width: 80px;
+    width: 50px;
     border-radius: 20%;
     margin-left: 12px;
 }
@@ -141,4 +141,11 @@ select{
 }
 .cancelButton{
     text-decoration: none;
+}
+
+error-output {
+    margin-left: 10px;
+    font-size: 12px;
+    font-style: italic;
+    color: red;
 }
