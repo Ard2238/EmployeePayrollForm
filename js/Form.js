@@ -71,3 +71,22 @@ function createAndUpdateLocalStorage(employee) {
     alert(empList.toString());
     localStorage.setItem("EmployeeList", JSON.stringify(empList));
 }
+
+function reset(){
+    setValue('#name', '');
+    setDefaultSelectedValues(document.getElementsByName('profile'))
+    setDefaultSelectedValues(document.getElementsByName('gender'))
+    setDefaultSelectedValues(document.getElementsByName('department'))
+    setValue('#salary', '');
+    setValue('#notes', '');
+    setValue('#Day', '1');
+    setValue('#month', 'January');
+    setValue('#year', '2020');    
+}
+
+function setDefaultSelectedValues(propertyValue){
+    for(let i=0; i<propertyValue.length; i++){
+        propertyValue[i].checked = false;
+    }
+    return setItems;
+}
