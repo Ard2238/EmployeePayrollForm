@@ -24,7 +24,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
 
 const save = () => {
     try{
-        let employee = createEmployee();        
+        let employee = createEmployee();
+        createAndUpdateLocalStorage(employee);        
     }catch (e){
         return;
     }
@@ -58,4 +59,15 @@ function getSelectedValues(propertyValue){
         }
     }
     return setItems;
+}
+
+function createAndUpdateLocalStorage(employee) {
+    let empList = JSON.parse(localStorage.getItem("EmployeeList"))
+    if(empList == undefined ){
+        empList = [employee]
+    }else{
+        empList.push(employee)
+    }
+    alert(empList.toString());
+    localStorage.setItem("EmployeeList", JSON.stringify(empList));
 }
