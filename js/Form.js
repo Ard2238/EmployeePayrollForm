@@ -21,3 +21,41 @@ window.addEventListener('DOMContentLoaded', (event) => {
         salary_op.textContent = salary.value
     });
 });
+
+const save = () => {
+    try{
+        let employee = createEmployee();        
+    }catch (e){
+        return;
+    }
+}
+
+function createEmployee() {
+    let employee = new Employee();
+    try{
+        employee.name = document.querySelector('#name').value;
+    }catch (e){
+        setTextValue('.text-Error', e);
+        throw e;
+    }
+
+    employee.profile = getSelectedValues(document.getElementsByName('profile'));
+    employee.gender = getSelectedValues(document.getElementsByName('gender'));
+    employee.department = getSelectedValues(document.getElementsByName('department'));
+    employee.salary = document.querySelector('#salary').value;
+    employee.note = document.querySelector('#notes').value;
+    let date = document.querySelector('#Day') + " " + document.querySelector('#month') + " " + document.querySelector('#year');
+    employee.date = Date.parse(date);
+    alert(employee.toString());
+    return employee;
+}
+
+function getSelectedValues(propertyValue){
+    let setItems = [];
+    for(let i=0; i<propertyValue.length; i++){
+        if(propertyValue[i].checked){
+            setItems.push(propertyValue[i].value)
+        }
+    }
+    return setItems;
+}
