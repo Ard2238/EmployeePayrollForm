@@ -1,3 +1,7 @@
+//setting global variables
+let isUpdate = false;
+let employeePayrollObj = {};
+
 window.addEventListener('DOMContentLoaded', (event) => {
     const name = document.querySelector('#name')
     const textError = document.querySelector('.text-Error')
@@ -20,8 +24,11 @@ window.addEventListener('DOMContentLoaded', (event) => {
     salary.addEventListener('input', function() {
         salary_op.textContent = salary.value
     });
+
+    checkForUpdate();
 });
 
+// save an employee object details
 const save = () => {
     try{
         let employee = createEmployee();
@@ -72,6 +79,7 @@ function createAndUpdateLocalStorage(employee) {
     localStorage.setItem("EmployeeList", JSON.stringify(empList));
 }
 
+// reset form to default values
 function reset(){
     setValue('#name', '');
     setDefaultSelectedValues(document.getElementsByName('profile'))
@@ -89,4 +97,39 @@ function setDefaultSelectedValues(propertyValue){
         propertyValue[i].checked = false;
     }
     return setItems;
+}
+
+// updating an employee record
+function checkForUpdate() {
+    let empJson = localStorage.getItem('editEmp')
+    isUpdate = empJson ? true : false;
+    if(!isUpdate) return;
+    employeePayrollObj = JSON.parse(empJson);
+    setForm();
+}
+
+function setForm() {
+    document.querySelector('#name').value = employeePayrollObj._name;
+    setSelectedValues('[name=profile]', employeePayrollObj._profile)
+    setSelectedValues('[name=gender]', employeePayrollObj._gender)
+    setSelectedValues('[name=department]', employeePayrollObj._department)
+    document.querySelector('#salary').value = employeePayrollObj._salary;
+    document.querySelector('.salary-output-text').textContent = employeePayrollObj._salary;
+    document.querySelector('#notes').value = employeePayrollObj._note;
+    let date = stringifyDate(employeePayrollObj._startDate).split(" ")
+    document.querySelector('#Day').value = date[0];
+    document.querySelector('#month').value = date[1];
+    document.querySelector('#year').value = date[2];
+}
+function setSelectedValues(propertyValue, value) {
+    let allItems = document.querySelectorAll(propertyValue)
+    allItems.forEach(item => {
+        if(Array.isArray(value)) {
+            if(value.includes(item.value)){
+                item.checked = true;
+            }
+        }else if(item.value === value){
+            item.checked = true;
+        }
+    }); 
 }

@@ -19,7 +19,7 @@ const createInnerHTML = () => {
         innerHtml = `${innerHtml}
         <tr>
             <td><img src="${emp._profile}" alt="" class="profile"></td>
-            <td>${emp._name}</td>
+            <td>${emp._name}</td>   
             <td>${emp._gender}</td>
             <td>${getDeptHtml(emp._department)}</td>
             <td>${emp._salary}</td>
@@ -50,4 +50,11 @@ function remove(obj) {
     localStorage.setItem('EmployeeList', JSON.stringify(empList))
     document.querySelector(".emp-count").textContent = empList.length;
     createInnerHTML();
+}
+
+const update = (obj) => {
+    let empUpdate = empList.find(emp => emp._id == obj._id)
+    if(!empUpdate) return;
+    localStorage.setItem('editEmp', JSON.stringify(empUpdate))
+    window.location.replace(site_properties.add_employee_page);
 }
