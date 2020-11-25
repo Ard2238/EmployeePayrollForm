@@ -9,6 +9,8 @@
         <link rel="stylesheet" href="../css/EmployeePayroll.css">
         <script defer src = "../js/EmployeePayrollForm.js"></script>
         <script defer src= "../js/Form.js"></script>
+        <script defer src= "../js/utility.js"></script>
+        <script defer src="../js/site_properties.js"></script>
     </head>
     <body>
         <header class="header content">
@@ -20,7 +22,7 @@
                 </div>
             </div>
             <div class="form-content">
-                <form class="form" action="#" onreset="reset()"  onsubmit="save(); return false">
+                <form class="form" action="#" onreset="reset()"  onsubmit="save(event); return false">
                     <div class="form-head">Employee Payroll Form</div>
                     <div class="row-content">
                         <label class="label text" for="name">Name: </label>
@@ -77,7 +79,7 @@
                     </div>
                     <div class="row-content">
                         <label class="label text" for="start date">Start Date</label>
-                        <div>
+                        <div id="date">
                             <select class="date-select" id="Day" name="Day">
                                 <option value="1">1</option>
                                 <option value="2">2</option>
@@ -133,6 +135,7 @@
                                 <option value="2016">2016</option>
                             </select>
                         </div>
+                        <error-output class="date-error"></error-output>
                     </div>
                     <div class="row-content">
                         <label class="label text" for="notes">Notes: </label>

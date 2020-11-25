@@ -17,6 +17,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
             textError.textContent = e;
         }
     });
+
+    const date = document.querySelector("#date")
+    const dateError = document.querySelector('.date-error')
+    date.addEventListener('input', function() {
+        let startDate = new Date(Date.parse(document.querySelector('#Day').value + " " + document.querySelector('#month').value +
+                                 " " + document.querySelector('#year').value));
+        try{
+            (new Employee()).startDate = startDate;
+            dateError.textContent = "";
+        }catch(e){
+            dateError.textContent = e;
+        }
+    })
     
     const salary = document.querySelector('#salary')
     const salary_op = document.querySelector('.salary-output-text')
@@ -29,33 +42,81 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 // save an employee object details
-const save = () => {
+const save = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
     try{
-        let employee = createEmployee();
-        createAndUpdateLocalStorage(employee);        
+        populateEmployeeObject();
+        createAndUpdateLocalStorage();
+        reset();
+        window.location.replace(site_properties.home_page);        
     }catch (e){
         return;
     }
 }
 
-function createEmployee() {
-    let employee = new Employee();
+function populateEmployeeObject(){
+    employeePayrollObj._name = document.querySelector('#name').value;
+    employeePayrollObj._profile = getSelectedValues(document.getElementsByName('profile'))
+    employeePayrollObj._gender = getSelectedValues(document.getElementsByName('gender'));
+    employeePayrollObj._department = getSelectedValues(document.getElementsByName('department'));
+    employeePayrollObj._salary = document.querySelector('#salary').value;
+    employeePayrollObj._note = document.querySelector('#notes').value;
+    let date = document.querySelector('#Day').value + " " + document.querySelector('#month').value + " " + document.querySelector('#year').value;
+    employeePayrollObj._startDate = date;
+}
+
+function createAndUpdateLocalStorage() {
+    let empList = JSON.parse(localStorage.getItem("EmployeeList"))
+    if(empList){
+        let emp = empList.find( empData => empData._id == employeePayrollObj._id)
+        if(!emp){
+            empList.push(createEmployeePayrollData())
+        }else{
+            const index = empList.map( empData => empData._id).indexOf(emp._id);
+            empList.splice(index, 1, createEmployeePayrollData(emp._id));
+        }
+    }else{
+        empList = [createEmployeePayrollData()]
+    }
+    localStorage.setItem("EmployeeList", JSON.stringify(empList));
+}
+
+function createEmployeePayrollData(id) {
+    let emp = new Employee();
+    if(!id) emp._id = createNewEmployeeId();
+    else emp.id = id;
+
+    setEmployeePayrollData(emp);
+    return emp;
+}
+
+function createNewEmployeeId() {
+    let empID = localStorage.getItem("EmployeeID")
+    empID = !empID ? 1 : (parseInt(empID) + 1).toString();
+    localStorage.setItem("EmployeeID", empID)
+    return empID
+}
+
+function setEmployeePayrollData(emp) {
     try{
-        employee.name = document.querySelector('#name').value;
-    }catch (e){
-        setTextValue('.text-Error', e);
+        emp.name = employeePayrollObj._name
+    }catch(e){
+        document.querySelector('.text-Error').textContent = e;
         throw e;
     }
-
-    employee.profile = getSelectedValues(document.getElementsByName('profile'));
-    employee.gender = getSelectedValues(document.getElementsByName('gender'));
-    employee.department = getSelectedValues(document.getElementsByName('department'));
-    employee.salary = document.querySelector('#salary').value;
-    employee.note = document.querySelector('#notes').value;
-    let date = document.querySelector('#Day') + " " + document.querySelector('#month') + " " + document.querySelector('#year');
-    employee.date = Date.parse(date);
-    alert(employee.toString());
-    return employee;
+    emp.profile = employeePayrollObj._profile;
+    emp.gender = employeePayrollObj._gender;
+    emp.department = employeePayrollObj._department;
+    emp.salary = employeePayrollObj._salary;
+    emp.note = employeePayrollObj._note;
+    try{
+        emp.startDate = new Date(Date.parse(employeePayrollObj._startDate))
+    }catch (e){
+        document.querySelector('date-error').textContent = e;
+        throw e;
+    }
+    alert(emp.toString())
 }
 
 function getSelectedValues(propertyValue){
@@ -68,35 +129,24 @@ function getSelectedValues(propertyValue){
     return setItems;
 }
 
-function createAndUpdateLocalStorage(employee) {
-    let empList = JSON.parse(localStorage.getItem("EmployeeList"))
-    if(empList == undefined ){
-        empList = [employee]
-    }else{
-        empList.push(employee)
-    }
-    alert(empList.toString());
-    localStorage.setItem("EmployeeList", JSON.stringify(empList));
-}
-
 // reset form to default values
 function reset(){
-    setValue('#name', '');
+    document.querySelector('#name').value = '';
     setDefaultSelectedValues(document.getElementsByName('profile'))
     setDefaultSelectedValues(document.getElementsByName('gender'))
     setDefaultSelectedValues(document.getElementsByName('department'))
-    setValue('#salary', '');
-    setValue('#notes', '');
-    setValue('#Day', '1');
-    setValue('#month', 'January');
-    setValue('#year', '2020');    
+    document.querySelector('#salary').value = '';
+    document.querySelector('#notes').value = '';
+    document.querySelector('#Day').value = '1';
+    document.querySelector('#month').value = 'January';
+    document.querySelector('#year').value = '2020';    
 }
 
 function setDefaultSelectedValues(propertyValue){
     for(let i=0; i<propertyValue.length; i++){
         propertyValue[i].checked = false;
     }
-    return setItems;
+    return;
 }
 
 // updating an employee record

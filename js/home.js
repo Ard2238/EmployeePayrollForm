@@ -23,7 +23,7 @@ const createInnerHTML = () => {
             <td>${emp._gender}</td>
             <td>${getDeptHtml(emp._department)}</td>
             <td>${emp._salary}</td>
-            <td>${emp._startDate}</td>
+            <td>${stringifyDate(emp._startDate)}</td>
             <td>
                 <img id="${emp._id}" onclick="remove(this)" alt="delete" src="../assets//icons/delete-black-18dp.svg">
                 <img id="${emp._id}" onclick="update(this)" alt="edit" src="../assets/icons/create-black-18dp.svg">  
@@ -43,7 +43,7 @@ function getDeptHtml(deptList){
 }
 
 function remove(obj) {
-    let empRemove = empList.find(emp => emp._id == obj._id)
+    let empRemove = empList.find(emp => emp._id == obj.id)
     if(!empRemove) return;
     const index = empList.map(empData => empData._id).indexOf(empRemove._id);
     empList.splice(index,1)
@@ -53,7 +53,7 @@ function remove(obj) {
 }
 
 const update = (obj) => {
-    let empUpdate = empList.find(emp => emp._id == obj._id)
+    let empUpdate = empList.find(emp => emp._id == obj.id)
     if(!empUpdate) return;
     localStorage.setItem('editEmp', JSON.stringify(empUpdate))
     window.location.replace(site_properties.add_employee_page);
