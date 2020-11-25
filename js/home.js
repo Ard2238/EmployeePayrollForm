@@ -1,12 +1,20 @@
+let empList;
 window.addEventListener('DOMContentLoaded', (event) => {
+    empList = getEmpListFromLocalStorage();
+    document.querySelector(".emp-count").textContent = empList.length;
     createInnerHTML();
+    localStorage.removeItem('editEmp')
 })
+
+function getEmpListFromLocalStorage(){
+    return localStorage.getItem('EmployeeList') ? JSON.parse(localStorage.getItem('EmployeeList')) : [];
+}
 
 const createInnerHTML = () => {
     const headerHtml = "<th>Profile Pic</th><th>Emp Name</th><th>Gender</th><th>Department</th><th>Salary</th>"
                         +"<th>Start Date</th><th>Actions</th>";
+    if(empList.length == 0) return;
     let innerHtml =  `${headerHtml}`;
-    let empList = createEmployeePayrollJSOn();
     for(const emp of empList){
         innerHtml = `${innerHtml}
         <tr>
@@ -32,22 +40,4 @@ function getDeptHtml(deptList){
         deptHtml = `${deptHtml} <div class='dept-label'>${dept}</div>`
     }
     return deptHtml
-}
-
-const createEmployeePayrollJSOn = () => {
-    let empList = [
-        {
-            _profile: '../assets/profile-images/Ellipse -1.png',
-            _name : 'Abhishek',
-            _gender : 'Male',
-            _department: [
-                'HR',
-                'Marketing'
-            ],
-            _salary : '500000',
-            _startDate : '16 Sept 2020',
-            _id : new Date().getTime()          
-        }
-    ];
-    return empList;
 }
