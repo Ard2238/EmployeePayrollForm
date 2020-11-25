@@ -41,3 +41,13 @@ function getDeptHtml(deptList){
     }
     return deptHtml
 }
+
+function remove(obj) {
+    let empRemove = empList.find(emp => emp._id == obj._id)
+    if(!empRemove) return;
+    const index = empList.map(empData => empData._id).indexOf(empRemove._id);
+    empList.splice(index,1)
+    localStorage.setItem('EmployeeList', JSON.stringify(empList))
+    document.querySelector(".emp-count").textContent = empList.length;
+    createInnerHTML();
+}
