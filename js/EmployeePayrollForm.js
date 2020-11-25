@@ -9,6 +9,11 @@ class Employee{
     //     this.note = params[6];
     // }
 
+    get id() { return this._id}
+    set id(id){
+        this._id = id;
+    }
+    
     get name() { return this._name; }
     set name(name){
         let nameRegex = RegExp('^[A-Z]{1}[a-z\\s]{2,}$')
